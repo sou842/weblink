@@ -2,7 +2,7 @@ var jwt = require('jsonwebtoken');
 
 
 const auth = (req, res, next) => {
-    const token = req.headers.authorization?.split(' ')[1];
+    const token = req.headers.authorization?.split(' ')[0];
 
     if (token) {
         try {
@@ -10,7 +10,7 @@ const auth = (req, res, next) => {
 
             if (decoded) {
                 req.body.userId = decoded.userId
-                req.body.user = decoded.user
+                req.body.userName = decoded.userName
                 next()
             } else {
                 res.status(200).json({ msg: 'user is not authorize' })

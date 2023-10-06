@@ -2,9 +2,15 @@ const mongoose = require('mongoose');
 
 
 const postSchema = mongoose.Schema({
-    title: String,
-    body: String,
-    device: String,
+    postImage: String,
+    postVideo: String,
+    postURL: String,
+    postDescription: String,
+    postDate: String,
+    IsPrivate: Boolean,
+    userName: String,
+    userId: String
+
 }, {
     versionKey: false
 })

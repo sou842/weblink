@@ -21,7 +21,7 @@ export const Register = () => {
                     onClose()
                 }
 
-            }).catch((err) => {
+            }).catch(() => {
                 toast({ title: "Somthing went wrong Please try again!", status: 'error', duration: 3000, isClosable: true, position: 'top', })
             })
     }

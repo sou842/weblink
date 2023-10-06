@@ -8,7 +8,8 @@ export const Login = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const toast = useToast()
+    const toast = useToast();
+    const weblink = JSON.parse(localStorage.getItem('weblink')) || {};
 
 
     const handleSubmit = () => {
@@ -16,7 +17,13 @@ export const Login = () => {
             .then((res) => {
 
                 if (res.data.msg == 'User has been logged in') {
+                    console.log(res.data)
                     toast({ title: res.data.msg, status: 'success', duration: 4000, isClosable: true, position: 'top', })
+
+                    weblink['token'] = res.data.token
+                    weblink['userName'] = res.data.userName
+                    localStorage.setItem('weblink', JSON.stringify(weblink))
+
                     onClose()
                 } else if (res.data.msg == 'Incorrect Password') {
                     toast({ title: res.data.msg, status: 'warning', duration: 4000, isClosable: true, position: 'top', })

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom"
 
 export const FeedPost = (ele) =>{
     const navigate = useNavigate()
-    console.log(ele)
+    // console.log(ele)
 
 return (
     <Box m={'1cm auto'} boxSize={'full'} p={'7px'} borderBottom={'1px solid grey'}>
@@ -16,11 +16,11 @@ return (
             <Text>{ele.userName}</Text>
             </Box>
 
-            <Text>{ele.date}</Text>
+            <Text>{ele.postDate}</Text>
         </Box>
         
         <Box bg={'black'} className="work">
-            <img src={ele.postImgL} alt='artkon' />
+            <img src={ele.postImage} alt='artkon' />
             <Box className="layer">
                 {/* <h3>Social Media App</h3> */}
                 {/* <p>Download it from play store.</p> */}
@@ -29,15 +29,15 @@ return (
         </Box>
 
         <Box p={'10px'}>
-            <Text>{ele.description}</Text>
+            <Text>{ele.postDescription}</Text>
 
             <Box mt={'10px'} display={'flex'} justifyContent={'space-between'}>
                 <Box display={'flex'} gap={'10px'} alignItems={'center'}>
                     <Image w={'30px'} src={'https://cdn-icons-png.flaticon.com/128/2107/2107845.png'} alt='like' />
-                    <Text>{ele.LikeCount} Likes</Text>
+                    <Text>{'120'} Likes</Text>
                 </Box>
                 <Box display={'flex'} gap={'10px'} alignItems={'center'}>
-                    <Text>{ele.commentCount} Comments</Text>
+                    <Text>{'13'} Comments</Text>
                     <Image w={'30px'} src={comment} alt='like' />
                 </Box>
             </Box>

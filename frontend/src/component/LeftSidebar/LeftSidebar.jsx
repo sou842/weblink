@@ -15,8 +15,8 @@ export const LeftSidebar = () => {
         { name: 'Home', img: home, url: '/' },
         { name: 'Search', img: search, url: '/' },
         { name: 'Problem', img: problem, url: '/' },
+        { name: 'Create Post', img: create, url: '/CreatePost' },
         { name: 'Notification', img: notification, url: '/' },
-        { name: 'Create', img: create, url: '/CreatePost' },
         { name: 'Profile', img: profile, url: '/' },
         { name: 'Setting', img: setting, url: '/' }
     ]
@@ -29,7 +29,7 @@ export const LeftSidebar = () => {
             </Box>
 
             {data && data?.map((ele, index) => (
-                <Box key={index} onClick={() => navigate(ele.url)} w={'85%'} cursor={'pointer'} borderRadius={'15px'} m={'15px auto'} p={'7px 0 7px 15px'} display={'flex'} alignItems={'center'} gap={'20px'}>
+                <Box key={index} onClick={() => navigate(ele.url)} w={'85%'} cursor={'pointer'} borderRadius={'15px'} m={'20px auto'} p={'7px 0 7px 15px'} display={'flex'} alignItems={'center'} gap={'20px'}>
                     <Box>
                         <Image w={'30px'} src={ele.img} alt="home" />
                     </Box>
