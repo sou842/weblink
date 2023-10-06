@@ -6,18 +6,19 @@ import notification from '../../assets/notification.png'
 import create from '../../assets/create.png'
 import profile from '../../assets/profile.png'
 import setting from '../../assets/setting.png'
+import { useNavigate } from "react-router-dom"
 
 
 export const LeftSidebar = () => {
-
+    const navigate = useNavigate();
     let data = [
-        { name: 'Home', img: home },
-        { name: 'Search', img: search },
-        { name: 'Problem', img: problem },
-        { name: 'Notification', img: notification },
-        { name: 'Create', img: create },
-        { name: 'Profile', img: profile },
-        { name: 'Setting', img: setting }
+        { name: 'Home', img: home, url: '/' },
+        { name: 'Search', img: search, url: '/' },
+        { name: 'Problem', img: problem, url: '/' },
+        { name: 'Notification', img: notification, url: '/' },
+        { name: 'Create', img: create, url: '/CreatePost' },
+        { name: 'Profile', img: profile, url: '/' },
+        { name: 'Setting', img: setting, url: '/' }
     ]
 
     return (
@@ -28,13 +29,11 @@ export const LeftSidebar = () => {
             </Box>
 
             {data && data?.map((ele, index) => (
-                <Box key={index}>
-                    <Box w={'85%'} cursor={'pointer'} borderRadius={'15px'} m={'15px auto'} p={'7px 0 7px 15px'} display={'flex'} alignItems={'center'} gap={'20px'}>
-                        <Box>
-                            <Image w={'30px'} src={ele.img} alt="home" />
-                        </Box>
-                        <Box fontWeight={'medium'} fontSize={'20px'}>{ele.name}</Box>
+                <Box key={index} onClick={() => navigate(ele.url)} w={'85%'} cursor={'pointer'} borderRadius={'15px'} m={'15px auto'} p={'7px 0 7px 15px'} display={'flex'} alignItems={'center'} gap={'20px'}>
+                    <Box>
+                        <Image w={'30px'} src={ele.img} alt="home" />
                     </Box>
+                    <Box fontWeight={'medium'} fontSize={'20px'}>{ele.name}</Box>
                 </Box>
             ))}
 
