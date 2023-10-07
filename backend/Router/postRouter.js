@@ -1,17 +1,22 @@
 const express = require('express');
 const { postModel } = require('../model/postModel.js');
+const { likepostModel } = require('../model/likepostModel.js');
 const { auth } = require('../Auth/auth.js');
 const date = require('date-and-time');
 
 const postRouter = express.Router()
 
 
-postRouter.get('/', auth, async (req, res) => {
-    const { userId } = req.body;
+postRouter.get('/get/:userId', async (req, res) => {
+    const {userId} = req.params
 
     try {
-        const post = await postModel.find({IsPrivate:false}).sort({_id:-1})
-        res.status(200).json({ msg: post })
+        const post = await postModel.find().sort({ _id: -1 })
+        const like = await likepostModel.aggregate([{ $sort: { _id: -1 } }, { $project: { allLikesArray: { $objectToArray: "$allLikes" } } }, { $project: { allLikesLength: { $size: "$allLikesArray" } } }]);
+
+
+        
+        res.status(200).json({ post,like })
 
     } catch (err) {
         res.status(400).json({ error: err.massage })
@@ -19,12 +24,23 @@ postRouter.get('/', auth, async (req, res) => {
 })
 
 postRouter.post('/add', auth, async (req, res) => {
+    const { userId, userName } = req.body;
 
     try {
         req.body.postDate = date.format(new Date(), 'DD MMM, YYYY')
-       
         const post = new postModel(req.body)
         await post.save()
+
+        let liked = {
+            post_id: post._id,
+            userId: userId,
+            userName: userName,
+            allLikes: { Weblink: 'like' }
+        }
+
+        const like = new likepostModel(liked)
+        await like.save()
+
         res.status(200).json({ msg: 'Post Added Successfully', 'post': req.body })
 
     } catch (err) {

@@ -22,6 +22,7 @@ export const Login = () => {
 
                     weblink['token'] = res.data.token
                     weblink['userName'] = res.data.userName
+                    weblink['userId'] = res.data.userId
                     localStorage.setItem('weblink', JSON.stringify(weblink))
 
                     onClose()
