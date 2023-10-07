@@ -42,7 +42,7 @@ userRouter.post('/login', async (req, res) => {
             bcrypt.compare(password, user.password, async (err, result) => {
                 if (result) {
                     var token = jwt.sign({ userId: user._id, userName: user.name }, 'weblink');
-                    res.status(200).json({ msg: 'User has been logged in', token: token, userName: user.name })
+                    res.status(200).json({ msg: 'User has been logged in', token: token, userName: user.name,userId: user._id })
 
                 } else {
                     res.status(200).json({ msg: 'Incorrect Password'})
