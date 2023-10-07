@@ -1,9 +1,7 @@
 const express = require('express');
 const { postModel } = require('../model/postModel.js');
-const { likepostModel } = require('../model/likepostModel.js');
 const { auth } = require('../Auth/auth.js');
 const date = require('date-and-time');
-const { likepostModel } = require('../model/likepostModel.js');
 
 const postRouter = express.Router()
 

@@ -39,7 +39,6 @@ export const Feed = () => {
                     </Box>
                 ))}
 
-
             </Box>
 
         </Box>

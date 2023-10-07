@@ -25,7 +25,7 @@ console.log(isLike)
             .then((res) => {
                 console.log(res.data);
                 GetPostData()
-                toast({ title: res.data.msg, status: 'success', duration: 1000, isClosable: true, position: 'top', })
+                // toast({ title: res.data.msg, status: 'warning', duration: 500, isClosable: true, position: 'top', })
             })
             .catch(() => {
                 toast({ title: "Somthing went wrong Please try again!", status: 'error', duration: 3000, isClosable: true, position: 'top', })
