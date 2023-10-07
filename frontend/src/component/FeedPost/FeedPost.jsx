@@ -3,28 +3,45 @@ import './FeedPost.css'
 import comment from '../../assets/comment.png'
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
-
+import { useEffect, useState } from "react"
+import star_fill from '../../assets/star_fill.png'
+import star_blank from '../../assets/star_blank.png'
 
 export const FeedPost = ({ ele, like, GetPostData }) => {
     const weblink = JSON.parse(localStorage.getItem('weblink')) || {};
+    const [isLike, setIsLike] = useState({ like: false, count: 0 });
     const navigate = useNavigate()
     const toast = useToast();
 
-    console.log(like)
+console.log(isLike)
 
     const handleLiked = (like_id) => {
-        axios.patch(`http://localhost:8080/liked_post/liked`,{like_id}, {
+        setIsLike((prevData) => ({ ...prevData, ['like']: !isLike['like'] }))
+        setIsLike((prevData) => ({ ...prevData, ['count']: isLike['like'] ? isLike['count'] - 1 : isLike['count'] + 1 }))
+
+        axios.patch(`http://localhost:8080/posts/liked`, { like_id }, {
             headers: { "Authorization": weblink.token }
         })
             .then((res) => {
                 console.log(res.data);
                 GetPostData()
-                // toast({ title: res.data.msg, status: 'success', duration: 4000, isClosable: true, position: 'top', })
+                toast({ title: res.data.msg, status: 'success', duration: 1000, isClosable: true, position: 'top', })
             })
             .catch(() => {
                 toast({ title: "Somthing went wrong Please try again!", status: 'error', duration: 3000, isClosable: true, position: 'top', })
             })
     }
+
+    useEffect(() => {
+
+        if (ele['allLikes'][weblink.userId] == undefined) {
+            setIsLike((prevData) => ({ ...prevData, ['like']: false }))
+        } else {
+            setIsLike((prevData) => ({ ...prevData, ['like']: true }))
+        }
+        setIsLike((prevData) => ({ ...prevData, ['count']: like['allLikesLength'] - 1 }))
+    }, [])
+
 
     return (
         <Box m={'1cm auto'} boxSize={'full'} p={'7px'} borderBottom={'1px solid grey'}>
@@ -51,8 +68,12 @@ export const FeedPost = ({ ele, like, GetPostData }) => {
 
                 <Box mt={'10px'} display={'flex'} justifyContent={'space-between'}>
                     <Box display={'flex'} gap={'10px'} alignItems={'center'}>
-                        <Image onClick={() => handleLiked(like._id)} cursor={'pointer'} w={'30px'} src={'https://cdn-icons-png.flaticon.com/128/2107/2107845.png'} alt='like' />
-                        <Box >{like['allLikesLength'] - 1} Likes</Box>
+                        {isLike['like'] ?
+                            <Image onClick={() => handleLiked(like._id)} cursor={'pointer'} w={'30px'} src={star_fill} alt='like' />
+                            :
+                            <Image onClick={() => handleLiked(like._id)} cursor={'pointer'} w={'30px'} src={star_blank} alt='like' />
+                        }
+                        <Box >{isLike['count']} Likes</Box>
                     </Box>
                     <Box display={'flex'} gap={'10px'} alignItems={'center'}>
                         <Box>{'13'} Comments</Box>

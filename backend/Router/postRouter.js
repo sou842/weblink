@@ -12,8 +12,7 @@ postRouter.get('/get/:userId', async (req, res) => {
 
     try {
         const post = await postModel.find().sort({ _id: -1 })
-        const like = await likepostModel.aggregate([{ $sort: { _id: -1 } }, { $project: { allLikesArray: { $objectToArray: "$allLikes" } } }, { $project: { allLikesLength: { $size: "$allLikesArray" } } }]);
-
+        const like = await postModel.aggregate([{ $sort: { _id: -1 } }, { $project: { allLikesArray: { $objectToArray: "$allLikes" } } }, { $project: { allLikesLength: { $size: "$allLikesArray" } } }]);
 
         
         res.status(200).json({ post,like })
@@ -28,18 +27,9 @@ postRouter.post('/add', auth, async (req, res) => {
 
     try {
         req.body.postDate = date.format(new Date(), 'DD MMM, YYYY')
+        req.body.allLikes = {Weblink: '*'}
         const post = new postModel(req.body)
         await post.save()
-
-        let liked = {
-            post_id: post._id,
-            userId: userId,
-            userName: userName,
-            allLikes: { Weblink: 'like' }
-        }
-
-        const like = new likepostModel(liked)
-        await like.save()
 
         res.status(200).json({ msg: 'Post Added Successfully', 'post': req.body })
 
@@ -47,6 +37,29 @@ postRouter.post('/add', auth, async (req, res) => {
         res.status(400).json({ error: err.massage })
     }
 })
+
+postRouter.patch('/liked', auth, async (req, res) => {
+    const { like_id, userId } = req.body
+
+    try {
+        const like = await postModel.findOne({ _id: like_id })
+
+        if (like['allLikes'][userId]==undefined){
+            like['allLikes'][userId] = '*'
+        } else{
+            delete like['allLikes'][userId]
+        }
+        
+        await postModel.findByIdAndUpdate({ _id: like_id }, like)
+        res.status(200).json({ msg: 'The post has been updated...' })
+
+    } catch (err) {
+        res.status(400).json({ error: err.massage })
+    }
+})
+
+
+
 
 postRouter.patch('/update/:PostId', auth, async (req, res) => {
     const userIdCheck = req.body.userId;
