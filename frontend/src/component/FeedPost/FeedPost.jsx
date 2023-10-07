@@ -1,7 +1,7 @@
 import { Box, Image, useToast } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { Comments } from "../../pages/Comments/Comments"
+import { Comments } from "../../pages/Comments/Comments.jsx"
 import axios from "axios"
 import './FeedPost.css'
 import star_fill from '../../assets/star_fill.png'
