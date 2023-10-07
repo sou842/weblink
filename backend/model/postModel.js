@@ -9,7 +9,8 @@ const postSchema = mongoose.Schema({
     postDate: String,
     IsPrivate: Boolean,
     userName: String,
-    userId: String
+    userId: String,
+    allLikes: {}
 
 }, {
     versionKey: false
