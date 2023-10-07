@@ -8,27 +8,25 @@ export const Feed = () => {
     const toast = useToast();
     const [feedData, setFeedData] = useState({ posts: [], likes: [] })
 
-const GetPostData = () =>{
-    console.log(weblink.userId)
-    axios.get(`http://localhost:8080/posts/get/${weblink.userId}`, {
-        headers: { "Authorization": weblink.token }
-    })
-        .then((res) => {
-            // console.log(res.data)
-            setFeedData((prevData) => ({ ...prevData, ['posts']: res.data.post }))
-            setFeedData((prevData) => ({ ...prevData, ['likes']: res.data.like }))
+    const GetPostData = () => {
+        axios.get(`http://localhost:8080/posts/get/${weblink.userId}`, {
+            headers: { "Authorization": weblink.token }
+        })
+            .then((res) => {
+                // console.log(res.data)
+                setFeedData((prevData) => ({ ...prevData, ['posts']: res.data.post }))
+                setFeedData((prevData) => ({ ...prevData, ['likes']: res.data.like }))
 
-        })
-        .catch(() => {
-            toast({ title: "Somthing went wrong Please try again!", status: 'error', duration: 3000, isClosable: true, position: 'top', })
-        })
-}
+            })
+            .catch(() => {
+                toast({ title: "Somthing went wrong Please try again!", status: 'error', duration: 3000, isClosable: true, position: 'top', })
+            })
+    }
 
     useEffect(() => {
         GetPostData()
     }, [])
 
-    console.log(feedData['posts'], feedData['posts'])
 
     return (
         <Box color={'whiteAlpha.900'} >

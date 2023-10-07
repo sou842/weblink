@@ -10,7 +10,7 @@ const postSchema = mongoose.Schema({
     IsPrivate: Boolean,
     userName: String,
     userId: String,
-    // allLikes: {Weblink: 'like'}
+    allLikes: {}
 
 }, {
     versionKey: false
