@@ -27,17 +27,24 @@ export const CreatePost = () => {
     }
 
     const handleSubmit = () => {
-        axios.post(`http://localhost:8080/posts/add`, post, {
-            headers: { "Authorization": weblink.token }
-        })
-            .then((res) => {
-                console.log(res.data);
-                toast({ title: res.data.msg, status: 'success', duration: 4000, isClosable: true, position: 'top', })
-                setPost({ postImage: '', postVideo: '', postURL: '', postDescription: '', IsPrivate: false, postDate: '' })
+
+        if (post.postImage != '' || post.postVideo != '') {
+
+            axios.post(`http://localhost:8080/posts/add`, post, {
+                headers: { "Authorization": weblink.token }
             })
-            .catch(() => {
-                toast({ title: "Somthing went wrong Please try again!", status: 'error', duration: 3000, isClosable: true, position: 'top', })
-            })
+                .then((res) => {
+                    console.log(res.data);
+                    toast({ title: res.data.msg, status: 'success', duration: 4000, isClosable: true, position: 'top', })
+                    setPost({ postImage: '', postVideo: '', postURL: '', postDescription: '', IsPrivate: false, postDate: '' })
+                })
+                .catch(() => {
+                    toast({ title: "Somthing went wrong Please try again!", status: 'error', duration: 3000, isClosable: true, position: 'top', })
+                })
+        } else {
+            toast({ title: 'Select Image of Video', status: 'warning', duration: 1500, isClosable: true, position: 'top', })
+
+        }
     }
 
 
@@ -57,6 +64,8 @@ export const CreatePost = () => {
                     <Button onClick={handleSubmit} w={'180px'}>POST</Button>
                     <Checkbox checked={post.IsPrivate} onChange={handleChange} name="IsPrivate" color={'grey'}>Private</Checkbox>
                 </Box>
+            </Box>
+            <Box>
             </Box>
         </Box>
     )

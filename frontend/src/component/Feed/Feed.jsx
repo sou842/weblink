@@ -9,7 +9,7 @@ export const Feed = () => {
     const [feedData, setFeedData] = useState({ posts: [], likes: [] })
 
     const GetPostData = () => {
-        axios.get(`http://localhost:8080/posts/get/${weblink.userId}`, {
+        axios.get(`http://localhost:8080/posts/get`, {
             headers: { "Authorization": weblink.token }
         })
             .then((res) => {

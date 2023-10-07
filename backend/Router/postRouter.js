@@ -6,15 +6,14 @@ const date = require('date-and-time');
 const postRouter = express.Router()
 
 
-postRouter.get('/get/:userId', async (req, res) => {
-    const {userId} = req.params
+postRouter.get('/get', async (req, res) => {
 
     try {
-        const post = await postModel.find().sort({ _id: -1 })
-        const like = await postModel.aggregate([{ $sort: { _id: -1 } }, { $project: { allLikesArray: { $objectToArray: "$allLikes" } } }, { $project: { allLikesLength: { $size: "$allLikesArray" } } }]);
+        const post = await postModel.find({ IsPrivate: false }).sort({ _id: -1 })
+        const like = await postModel.aggregate([{ $sort: { _id: -1 } }, { $match: { "IsPrivate": false } }, { $project: { allLikesArray: { $objectToArray: "$allLikes" } } }, { $project: { allLikesLength: { $size: "$allLikesArray" } } }]);
 
-        
-        res.status(200).json({ post,like })
+        // console.log(like)
+        res.status(200).json({ post, like })
 
     } catch (err) {
         res.status(400).json({ error: err.massage })
@@ -26,7 +25,7 @@ postRouter.post('/add', auth, async (req, res) => {
 
     try {
         req.body.postDate = date.format(new Date(), 'DD MMM, YYYY')
-        req.body.allLikes = {Weblink: '*'}
+        req.body.allLikes = { Weblink: '*' }
         const post = new postModel(req.body)
         await post.save()
 
@@ -43,12 +42,12 @@ postRouter.patch('/liked', auth, async (req, res) => {
     try {
         const like = await postModel.findOne({ _id: like_id })
 
-        if (like['allLikes'][userId]==undefined){
+        if (like['allLikes'][userId] == undefined) {
             like['allLikes'][userId] = '*'
-        } else{
+        } else {
             delete like['allLikes'][userId]
         }
-        
+
         await postModel.findByIdAndUpdate({ _id: like_id }, like)
         res.status(200).json({ msg: 'The post has been updated...' })
 

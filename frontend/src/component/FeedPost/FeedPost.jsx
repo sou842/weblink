@@ -1,11 +1,13 @@
 import { Box, Image, useToast } from "@chakra-ui/react"
-import './FeedPost.css'
-import comment from '../../assets/comment.png'
-import { useNavigate } from "react-router-dom"
-import axios from "axios"
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { Comments } from "../../pages/Comments/Comments"
+import axios from "axios"
+import './FeedPost.css'
 import star_fill from '../../assets/star_fill.png'
 import star_blank from '../../assets/star_blank.png'
+
+
 
 export const FeedPost = ({ ele, like, GetPostData }) => {
     const weblink = JSON.parse(localStorage.getItem('weblink')) || {};
@@ -13,7 +15,7 @@ export const FeedPost = ({ ele, like, GetPostData }) => {
     const navigate = useNavigate()
     const toast = useToast();
 
-console.log(isLike)
+    // console.log(ele)
 
     const handleLiked = (like_id) => {
         setIsLike((prevData) => ({ ...prevData, ['like']: !isLike['like'] }))
@@ -55,18 +57,18 @@ console.log(isLike)
             </Box>
 
             <Box bg={'black'} className="work">
-                <img src={ele.postImage} alt='artkon' />
+                <img src={ele.postImage} alt='webLink' />
                 <Box className="layer">
                     {/* <h3>Social Media App</h3> */}
                     {/* <p>Download it from play store.</p> */}
-                    <a href={ele.postURL}>@</a>
+                    <a href={ele.postURL}>{'</>'}</a>
                 </Box>
             </Box>
 
             <Box p={'10px'}>
                 <Box>{ele.postDescription}</Box>
 
-                <Box mt={'10px'} display={'flex'} justifyContent={'space-between'}>
+                <Box  m={'15px 7px 0 7px'} display={'flex'} justifyContent={'space-between'}>
                     <Box display={'flex'} gap={'10px'} alignItems={'center'}>
                         {isLike['like'] ?
                             <Image onClick={() => handleLiked(like._id)} cursor={'pointer'} w={'30px'} src={star_fill} alt='like' />
@@ -76,11 +78,12 @@ console.log(isLike)
                         <Box >{isLike['count']} Likes</Box>
                     </Box>
                     <Box display={'flex'} gap={'10px'} alignItems={'center'}>
-                        <Box>{'13'} Comments</Box>
-                        <Image w={'30px'} src={comment} alt='like' />
+                        <Box display={'flex'}><Comments postId={ele._id}/></Box>
                     </Box>
                 </Box>
             </Box>
+
+
         </Box>
     )
 }
